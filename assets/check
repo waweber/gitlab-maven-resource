@@ -46,7 +46,9 @@ packaging=$(get_packaging $artifact)
 classifier=$(get_classifier $artifact)
 
 auth=""
-[ -n "$deploy_token" ] && auth="-H 'Deploy-Token: $deploy_token'"
+add_header=""
+[ -n "$deploy_token" ] && auth="Deploy-Token: $deploy_token"
+[ -n "$deploy_token" ] && add_header="-H"
 
 cert=""
 if [ "$skip_cert_check" = "true" ]; then
@@ -72,7 +74,7 @@ else
 fi
 
 set +e
-metadata=$(curl --fail --silent --show-error $cert $auth $metadataUrl 2>&1)
+metadata=$(curl --fail --silent --show-error $cert $add_header "$auth" $metadataUrl 2>&1)
 if [ $? -ne 0 ]; then
   printf '\e[91m[ERROR]\e[0m %s\n' "$metadata"
   printf '\e[91m[ERROR]\e[0m failed to download maven-metadata.xml from: %s\n' "$metadataUrl"
