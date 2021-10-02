@@ -165,6 +165,7 @@ if [[ "$version" = *-SNAPSHOT ]]; then
   --arg skip_cert_check "$skip_cert_check" \
   --arg repository_cert "$repository_cert" \
   --arg debug "$debug" \
+  --arg deploy_token "$deploy_token" \
   '{
     version: {
       version: $version
@@ -175,7 +176,8 @@ if [[ "$version" = *-SNAPSHOT ]]; then
       artifact: $artifact,
       skip_cert_check: $skip_cert_check,
       repository_cert: $repository_cert,
-      debug: $debug
+      debug: $debug,
+      deploy_token: $deploy_token
     }
   }' | $resource_dir/check "$source" | jq -r '.[].version')
 fi
