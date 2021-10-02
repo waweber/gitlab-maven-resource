@@ -4,8 +4,6 @@
   <servers>
     <server>
       <id>remote-repository</id>
-      <username>${repository.username}</username>
-      <password>${repository.password}</password>
       <configuration>
         <httpHeaders>
           <property>

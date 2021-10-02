@@ -36,8 +36,6 @@ fi
 release_url=$(jq -r '.source.url //empty' < $payload)
 snapshot_url=$(jq -r '.source.snapshot_url //empty' < $payload)
 artifact=$(jq -r '.source.artifact //empty' < $payload)
-username=$(jq -r '.source.username //empty' < $payload)
-password=$(jq -r '.source.password //empty' < $payload)
 disable_redeploy=$(jq -r '.source.disable_redeploy //empty' < $payload)
 skip_cert_check=$(jq -r '.source.skip_cert_check //empty' < $payload)
 repository_cert=$(jq -r '.source.repository_cert //empty' < $payload)
@@ -114,8 +112,6 @@ if [ "$disable_redeploy" = "true" ] && [ "$isSnapshot" != true ]; then
   --arg version "$version" \
   --arg url "$release_url" \
   --arg artifact "$artifact" \
-  --arg username "$username" \
-  --arg password "$password" \
   --arg skip_cert_check "$skip_cert_check" \
   --arg repository_cert "$repository_cert" \
   --arg debug "$debug" \
@@ -126,8 +122,6 @@ if [ "$disable_redeploy" = "true" ] && [ "$isSnapshot" != true ]; then
     source: {
       url: $url,
       artifact: $artifact,
-      username: $username,
-      password: $password,
       skip_cert_check: $skip_cert_check,
       repository_cert: $repository_cert,
       debug: $debug
@@ -157,8 +151,6 @@ args="$args -Dpackaging=$packaging"
 
 [ -f "$pom_file" ]   && args="$args -DpomFile=$pom_file"
 [ -n "$classifier" ] && args="$args -Dclassifier=$classifier"
-[ -n "$username" ]   && args="$args -Drepository.username=$username";
-[ -n "$password" ]   && args="$args -Drepository.password=$password";
 [ -n "$deploy_token" ] && args="$args -DdeployToken=$deploy_token"
 
 $resource_dir/mvnw deploy:deploy-file $args
@@ -170,8 +162,6 @@ if [[ "$version" = *-SNAPSHOT ]]; then
   --arg release_url "$release_url" \
   --arg snapshot_url "$snapshot_url" \
   --arg artifact "$artifact" \
-  --arg username "$username" \
-  --arg password "$password" \
   --arg skip_cert_check "$skip_cert_check" \
   --arg repository_cert "$repository_cert" \
   --arg debug "$debug" \
@@ -183,8 +173,6 @@ if [[ "$version" = *-SNAPSHOT ]]; then
       url: $release_url,
       snapshot_url: $snapshot_url,
       artifact: $artifact,
-      username: $username,
-      password: $password,
       skip_cert_check: $skip_cert_check,
       repository_cert: $repository_cert,
       debug: $debug

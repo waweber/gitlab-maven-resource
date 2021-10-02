@@ -29,8 +29,6 @@ release_url=$(jq -r '.source.url //empty' < $payload)
 snapshot_url=$(jq -r '.source.snapshot_url //empty' < $payload)
 artifact=$(jq -r '.source.artifact //empty' < $payload)
 version=$(jq -r '.version.version //empty' < $payload)
-username=$(jq -r '.source.username //empty' < $payload)
-password=$(jq -r '.source.password //empty' < $payload)
 skip_cert_check=$(jq -r '.source.skip_cert_check //empty' < $payload)
 repository_cert=$(jq -r '.source.repository_cert //empty' < $payload)
 deploy_token=$(jq -r '.source.deploy_token //empty' < $payload)
@@ -48,7 +46,6 @@ packaging=$(get_packaging $artifact)
 classifier=$(get_classifier $artifact)
 
 auth=""
-[ -n "$username" ] && auth="--user $username:$password"
 [ -n "$deploy_token" ] && auth="-H 'Deploy-Token: $deploy_token'"
 
 cert=""
