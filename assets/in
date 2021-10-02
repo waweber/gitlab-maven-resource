@@ -39,6 +39,7 @@ username=$(jq -r '.source.username //empty' < $payload)
 password=$(jq -r '.source.password //empty' < $payload)
 skip_cert_check=$(jq -r '.source.skip_cert_check //empty' < $payload)
 repository_cert=$(jq -r '.source.repository_cert //empty' < $payload)
+deploy_token=$(jq -r '.source.deploy_token //empty' < $payload)
 
 # TODO: Add more error checking
 if [ -z "$release_url" ] && [ -z "$snapshot_url" ] ; then
@@ -95,6 +96,7 @@ args=
 args="$args -Dartifact=$artifactItem"
 args="$args -DoutputDirectory=$destination"
 args="$args -Drepository.url=$url"
+[ -n "$deploy_token" ] && args="$args -DdeployToken=$deploy_token"
 
 [ -n "$username" ] && args="$args -Drepository.username=$username";
 [ -n "$password" ] && args="$args -Drepository.password=$password";

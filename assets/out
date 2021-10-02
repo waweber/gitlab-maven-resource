@@ -41,6 +41,7 @@ password=$(jq -r '.source.password //empty' < $payload)
 disable_redeploy=$(jq -r '.source.disable_redeploy //empty' < $payload)
 skip_cert_check=$(jq -r '.source.skip_cert_check //empty' < $payload)
 repository_cert=$(jq -r '.source.repository_cert //empty' < $payload)
+deploy_token=$(jq -r '.source.deploy_token //empty' < $payload)
 
 file=$(jq -r '.params.file //empty' < $payload)
 pom_file=$(jq -r '.params.pom_file //empty' < $payload)
@@ -158,6 +159,7 @@ args="$args -Dpackaging=$packaging"
 [ -n "$classifier" ] && args="$args -Dclassifier=$classifier"
 [ -n "$username" ]   && args="$args -Drepository.username=$username";
 [ -n "$password" ]   && args="$args -Drepository.password=$password";
+[ -n "$deploy_token" ] && args="$args -DdeployToken=$deploy_token"
 
 $resource_dir/mvnw deploy:deploy-file $args
 

@@ -33,6 +33,7 @@ username=$(jq -r '.source.username //empty' < $payload)
 password=$(jq -r '.source.password //empty' < $payload)
 skip_cert_check=$(jq -r '.source.skip_cert_check //empty' < $payload)
 repository_cert=$(jq -r '.source.repository_cert //empty' < $payload)
+deploy_token=$(jq -r '.source.deploy_token //empty' < $payload)
 
 # TODO: Add more error checking
 if [ -z "$release_url" ] && [ -z "$snapshot_url" ] ; then
@@ -48,6 +49,7 @@ classifier=$(get_classifier $artifact)
 
 auth=""
 [ -n "$username" ] && auth="--user $username:$password"
+[ -n "$deploy_token" ] && auth="-H 'Deploy-Token: $deploy_token'"
 
 cert=""
 if [ "$skip_cert_check" = "true" ]; then
